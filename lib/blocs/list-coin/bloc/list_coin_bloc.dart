@@ -3,12 +3,12 @@ import 'package:meta/meta.dart';
 import 'package:potacoin/models/coin.dart';
 import 'package:potacoin/repositories/list_coin_repository.dart';
 
-part 'list_coin_bloc_event.dart';
-part 'list_coin_bloc_state.dart';
+part 'list_coin_event.dart';
+part 'list_coin_state.dart';
 
-class ListCoinBlocBloc extends Bloc<ListCoinBlocEvent, ListCoinBlocState> {
-  ListCoinBlocBloc() : super(ListCoinBlocInitial()) {
-    on<ListCoinBlocEvent>((event, emit) async {
+class ListCoinBloc extends Bloc<ListCoinEvent, ListCoinBlocState> {
+  ListCoinBloc() : super(ListCoinBlocInitial()) {
+    on<ListCoinEventLoad>((event, emit) async {
       emit(ListCoinBlocLoading());
       try {
         final coins = await ListCoinRepository().getCoin();

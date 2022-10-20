@@ -1,4 +1,4 @@
-part of 'list_coin_bloc_bloc.dart';
+part of 'list_coin_bloc.dart';
 
 @immutable
 abstract class ListCoinBlocState {}

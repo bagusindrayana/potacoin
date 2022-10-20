@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:potacoin/blocs/list-coin/bloc/list_coin_bloc_bloc.dart';
+import 'package:potacoin/blocs/list-coin/bloc/list_coin_bloc.dart';
 
 class MarketPriceElement extends StatefulWidget {
   const MarketPriceElement({Key? key}) : super(key: key);
@@ -13,12 +13,11 @@ class _MarketPriceElementState extends State<MarketPriceElement> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ListCoinBlocBloc(),
-      child: BlocBuilder<ListCoinBlocBloc, ListCoinBlocState>(
+      create: (context) => ListCoinBloc(),
+      child: BlocBuilder<ListCoinBloc, ListCoinBlocState>(
         builder: (context, state) {
           if (state is ListCoinBlocInitial) {
-            BlocProvider.of<ListCoinBlocBloc>(context)
-                .add(ListCoinBlocEventLoad());
+            BlocProvider.of<ListCoinBloc>(context).add(ListCoinEventLoad());
             return const Center(
               child: CircularProgressIndicator(),
             );
@@ -27,20 +26,25 @@ class _MarketPriceElementState extends State<MarketPriceElement> {
               child: CircularProgressIndicator(),
             );
           } else if (state is ListCoinBlocSuccess) {
-            return ListView.builder(
-              itemCount: state.coins.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  leading: Image.network(
-                    state.coins[index].image,
-                    width: 50,
-                  ),
-                  title: Text(state.coins[index].name),
-                  subtitle: Text(state.coins[index].symbol),
-                  trailing: Text("${state.coins[index].currentPrice}"),
-                );
-              },
-            );
+            return RefreshIndicator(
+                child: ListView.builder(
+                  itemCount: state.coins.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      leading: Image.network(
+                        state.coins[index].image,
+                        width: 50,
+                      ),
+                      title: Text(state.coins[index].name),
+                      subtitle: Text(state.coins[index].symbol),
+                      trailing: Text("${state.coins[index].currentPrice}"),
+                    );
+                  },
+                ),
+                onRefresh: () async {
+                  BlocProvider.of<ListCoinBloc>(context)
+                      .add(ListCoinEventLoad());
+                });
           } else if (state is ListCoinBlocError) {
             return RefreshIndicator(
                 child: SingleChildScrollView(
@@ -53,8 +57,8 @@ class _MarketPriceElementState extends State<MarketPriceElement> {
                   ),
                 ),
                 onRefresh: () async {
-                  BlocProvider.of<ListCoinBlocBloc>(context)
-                      .add(ListCoinBlocEventLoad());
+                  BlocProvider.of<ListCoinBloc>(context)
+                      .add(ListCoinEventLoad());
                 });
           } else {
             return const Center(

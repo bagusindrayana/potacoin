@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:potacoin/blocs/list-coin/bloc/list_coin_bloc_bloc.dart';
+import 'package:potacoin/blocs/list-coin/bloc/list_coin_bloc.dart';
 import 'package:potacoin/pages/home_page_elelements/exchanges_element.dart';
 import 'package:potacoin/pages/home_page_elelements/market_price_element.dart';
 import 'package:potacoin/pages/home_page_elelements/trending_coin_element.dart';
@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Harga Pasar"),
+        title: const Text("PotaCoin"),
       ),
       //bloc provider load list coin
       body: PageView(
@@ -74,16 +74,16 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.store),
+            label: 'Market',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Business',
+            icon: Icon(Icons.transform_rounded),
+            label: 'Exchanges',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'School',
+            icon: Icon(Icons.trending_up),
+            label: 'Trending',
           ),
         ],
         currentIndex: _selectedIndex,
